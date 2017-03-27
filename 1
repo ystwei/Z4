@@ -1,8 +1,19 @@
-db：数据库层
-DAO:Data Access Object：数据库通讯层
-service：服务层
-vo：value object,数据对象通讯层
-作业
-1.建数据库。
-2.分层，分包，分页
-3.建立模板
+project1
+
+user
+
+id (auto pk int)
+username varchar(20) not null
+pwd varchar(20) not null
+
+Y1
+
+
+
+DB:连接数据库的
+DAO：Data Access Object：执行sql的
+Service：调用DAO层
+VO：value Object：值对象，通讯，在各层之间进行传递数据。
+
+
+
