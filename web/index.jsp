@@ -27,6 +27,33 @@
 
   </style>
   <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+  <script>
+    $(function(){
+
+        $("#form1").submit(function(){
+            var username=$("#userName").val();
+            var pwd=$("#password").val();
+
+            if(username==""){
+                alert("用户名不能为空");
+
+                return false;
+            }
+            if(pwd==""){
+                alert("密码不能为空");
+
+                return false;
+            }
+
+            $("#form1").submit();
+
+        });
+
+
+    });
+
+  </script>
+
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <link href="css/app.css" rel="stylesheet"/>
@@ -38,7 +65,7 @@
     <div class="formcontainer">
 
       <form  name="myForm" class="form-horizontal" id="form1"
-             action="add.jsp"
+             action="check.jsp"
              method="post">
 
 
