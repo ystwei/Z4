@@ -5,7 +5,9 @@ import com.weikun.vo.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +48,27 @@ public class UserDAOImpl implements  IUserDAO{
 
     @Override
     public boolean del(int id) {
-        return false;
+        boolean flag=false;
+        PreparedStatement pstmt=null;
+        try {
+            pstmt=conn.prepareStatement("delete from user where id =?");
+            pstmt.setInt(1,id);
+
+            flag=pstmt.executeUpdate()>0?true:false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            if(pstmt!=null){
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return flag;
     }
 
     @Override
@@ -56,11 +78,84 @@ public class UserDAOImpl implements  IUserDAO{
 
     @Override
     public List<User> queryAll() {
-        return null;
+        PreparedStatement pstmt=null;
+        ResultSet rs=null;
+        List<User> list=new ArrayList<User>();
+        try {
+            pstmt=conn.prepareStatement("select * from user order by id desc");
+
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                User user=new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+
+                list.add(user);
+
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            if(pstmt!=null){
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(rs!=null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return list;
     }
 
     @Override
     public User queryUserByid(int id) {
-        return null;
+        PreparedStatement pstmt=null;
+        User user=null;
+        ResultSet rs=null;
+        try {
+            pstmt=conn.prepareStatement("select * from user WHERE  id=?");
+            pstmt.setInt(1,id);
+
+            rs=pstmt.executeQuery();
+
+            if(rs.next()){
+                user=new User();
+                user.setUsername(rs.getString("username"));
+                user.setId(rs.getInt("id"));
+                user.setPassword(rs.getString("password"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            if(pstmt!=null){
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(rs!=null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return user;
     }
 }

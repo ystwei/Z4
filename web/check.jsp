@@ -20,23 +20,17 @@
 
 
     if(service.add(user)==true){//增加成功
+        request.setAttribute("msg","增加成功！");
  %>
-        <script>
-            alert("增加成功！");
-            window.location="index.jsp";
-        </script>
+      <jsp:forward page="index.jsp"/>
 <%
 
 
 
     }else{
-
+        request.setAttribute("msg","增加失败！");
 %>
-        <script>
-
-            alert("增加失败！");
-            window.location="index.jsp";
-        </script>
+        <jsp:forward page="index.jsp"/>
 <%
 
     }

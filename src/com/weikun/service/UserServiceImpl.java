@@ -18,7 +18,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean del(int id) {
-        return false;
+        return dao.del(id);
     }
 
     @Override
@@ -28,11 +28,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<User> queryAll() {
-        return null;
+        return dao.queryAll();
     }
 
     @Override
     public User queryUserByid(int id) {
-        return null;
+        return dao.queryUserByid(id);
     }
 }

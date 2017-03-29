@@ -1,4 +1,7 @@
-<%@ page language="java"  pageEncoding="utf-8"%>
+<%@ page import="com.weikun.service.IUserService" %>
+<%@ page import="com.weikun.service.UserServiceImpl" %>
+<%@ page import="java.util.*,com.weikun.vo.*" %>
+<%@ page language="java" pageEncoding="utf-8"%>
 
 <html>
 <head >
@@ -61,13 +64,25 @@
 <body>
 <div class="generic-container" >
   <div class="panel panel-default" >
-    <div class="panel-heading"><span class="lead">注册用户 </span></div>
+    <div class="panel-heading">
+      <span class="lead">注册用户 </span>
+      <span class="lead"><%=request.getAttribute("msg")==null?"":request.getAttribute("msg")%></span>
+    </div>
     <div class="formcontainer">
 
       <form  name="myForm" class="form-horizontal" id="form1"
              action="check.jsp"
              method="post">
+        <%
+          IUserService service=new UserServiceImpl();
+          User u=null;
+          if(request.getParameter("id")!=null) {//有id这个参数，一定是编辑
+            String id = request.getParameter("id");
+            u = service.queryUserByid(Integer.parseInt(id));
+          }
 
+
+        %>
 
         <div class="row">
           <div class="form-group col-md-12">
@@ -76,7 +91,7 @@
               <input type="hidden" name="id"
                      value=""/>
               <input type="text" name="userName" id="userName"
-                     value=""
+                     value="<%=u==null?"":u.getUsername()%>"
                      class="username form-control input-sm"
                      placeholder="输入你的姓名"/>
               <div class="has-error">
@@ -92,7 +107,7 @@
             <label class="col-md-2 control-lable" >密码</label>
             <div class="col-md-7">
               <input type="text" name="password" id="password"
-                     value=""
+                     value="<%=u==null?"":u.getPassword()%>"
                      class="password form-control input-sm"
                      placeholder="输入你的密码"
               />
@@ -129,26 +144,38 @@
           <th>ID.</th>
           <th>用户名</th>
           <th>密码</th>
-          <th width="20%"></th>
+          <th width="20%">操作</th>
         </tr>
         </thead>
         <tbody>
+          <%
 
+            List <User>list=service.queryAll();
+            Iterator<User> it=list.iterator();
+            int id=0;
+            while(it.hasNext()){
+                User user=it.next();
+
+          %>
         <tr>
           <td>
-
+              <%=++id%>
           </td>
           <td>
-
+              <%=user.getUsername()%>
           </td>
           <td>
-
+              <%=user.getPassword()%>
           </td>
           <td>
-
+            <a href="index.jsp?id=<%=user.getId()%>"  class="btn btn-success custom-width">编辑</a>
+            <a href="del.jsp?id=<%=user.getId()%>"  class="btn btn-danger custom-width">删除</a>
           </td>
         </tr>
+        <%
+          }
 
+        %>
         </tbody>
       </table>
     </div>
