@@ -8,8 +8,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"  import="com.weikun.vo.User" %>
 <jsp:useBean id="service" class="com.weikun.service.UserServiceImpl"/>
 <%
+    String username=new String(request.getParameter("userName").toString().getBytes("ISO8859-1"),"utf-8");
 
-    String username=request.getParameter("userName");
 
     String password=request.getParameter("password");
 

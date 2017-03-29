@@ -32,20 +32,31 @@
   <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
   <script>
     $(function(){
-
+        $("#rst").click(function(){
+            $("#userName").val("");
+            $("#password").val("");
+            $("#uerror").html("");
+            $("#perror").html("");
+        });
         $("#form1").submit(function(){
             var username=$("#userName").val();
             var pwd=$("#password").val();
 
             if(username==""){
-                alert("用户名不能为空");
+               $("#uerror").html("用户不能为空！");
 
                 return false;
+            }else{
+                $("#uerror").html("");
+
             }
             if(pwd==""){
-                alert("密码不能为空");
+                $("#perror").html("密码不能为空！");
 
                 return false;
+            }else{
+
+                $("#perror").html("");
             }
 
             $("#form1").submit();
@@ -69,27 +80,27 @@
       <span class="lead"><%=request.getAttribute("msg")==null?"":request.getAttribute("msg")%></span>
     </div>
     <div class="formcontainer">
+      <%
+        IUserService service=new UserServiceImpl();
+        User u=null;
+        if(request.getParameter("id")!="" && request.getParameter("id")!=null) {//有id这个参数，一定是编辑
+          String id = request.getParameter("id");
+          u = service.queryUserByid(Integer.parseInt(id));
+        }
 
+
+      %>
       <form  name="myForm" class="form-horizontal" id="form1"
-             action="check.jsp"
+             action="<%=u==null?"add.jsp":"update.jsp"%>"
              method="post">
-        <%
-          IUserService service=new UserServiceImpl();
-          User u=null;
-          if(request.getParameter("id")!=null) {//有id这个参数，一定是编辑
-            String id = request.getParameter("id");
-            u = service.queryUserByid(Integer.parseInt(id));
-          }
 
-
-        %>
 
         <div class="row">
           <div class="form-group col-md-12">
             <label class="col-md-2 control-lable">姓名</label>
             <div class="col-md-7">
               <input type="hidden" name="id"
-                     value=""/>
+                     value="<%=u==null?"":u.getId()%>"/>
               <input type="text" name="userName" id="userName"
                      value="<%=u==null?"":u.getUsername()%>"
                      class="username form-control input-sm"

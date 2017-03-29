@@ -73,7 +73,28 @@ public class UserDAOImpl implements  IUserDAO{
 
     @Override
     public boolean update(User user) {
-        return false;
+        boolean flag=false;
+
+        PreparedStatement pstmt=null;
+        try {
+            pstmt=conn.prepareStatement("update user set username=? , password=? where id=?");
+            pstmt.setString(1,user.getUsername());
+            pstmt.setString(2,user.getPassword());
+            pstmt.setInt(3,user.getId());
+            flag=pstmt.executeUpdate()>0?true:false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            if(pstmt!=null){
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return flag;
     }
 
     @Override
@@ -155,7 +176,47 @@ public class UserDAOImpl implements  IUserDAO{
                 }
             }
         }
+        return user;
+    }
 
+    @Override
+    public User queryUserByUsername(String username) {
+
+        PreparedStatement pstmt=null;
+        User user=null;
+        ResultSet rs=null;
+        try {
+            pstmt=conn.prepareStatement("select * from user WHERE  username=?");
+            pstmt.setString(1,username);
+
+            rs=pstmt.executeQuery();
+
+            if(rs.next()){
+                user=new User();
+                user.setUsername(rs.getString("username"));
+                user.setId(rs.getInt("id"));
+                user.setPassword(rs.getString("password"));
+
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            if(pstmt!=null){
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(rs!=null){
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return user;
     }
 }

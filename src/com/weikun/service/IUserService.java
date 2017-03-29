@@ -13,4 +13,5 @@ public interface IUserService {
     public boolean update(User user);
     public List<User> queryAll();
     public User queryUserByid(int id);
+    public User queryUserByUsername(String username) ;
 }

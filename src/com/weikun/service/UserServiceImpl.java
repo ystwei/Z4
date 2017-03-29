@@ -13,6 +13,9 @@ public class UserServiceImpl implements IUserService {
     private IUserDAO dao=new UserDAOImpl();
     @Override
     public boolean add(User user) {
+        if(this.queryUserByUsername(user.getUsername())!=null){
+            return false;
+        }
         return dao.add(user);
     }
 
@@ -23,7 +26,10 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public boolean update(User user) {
-        return false;
+        if(this.queryUserByUsername(user.getUsername())!=null){
+            return false;
+        }
+        return dao.update(user);
     }
 
     @Override
@@ -34,5 +40,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User queryUserByid(int id) {
         return dao.queryUserByid(id);
+    }
+
+    @Override
+    public User queryUserByUsername(String username) {
+        return dao.queryUserByUsername(username);
     }
 }
